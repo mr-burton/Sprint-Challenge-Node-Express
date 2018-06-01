@@ -17,7 +17,7 @@ const sendUserError = (status, message, res) => {
     return;
 }
 
-
+// Get all data
 server.get('/api/users', (req, res) => {
     projects.get()
         .then(post => {
@@ -25,6 +25,7 @@ server.get('/api/users', (req, res) => {
         })
 })
 
+// Get specific ID
 server.get('/api/users/:id', (req, res) => {
     const { id } = req.params;
     projects.get(id)
@@ -36,6 +37,7 @@ server.get('/api/users/:id', (req, res) => {
         })
 })
 
+// Get ID of Project Model
 server.get('/api/users/projectModel/:id', (req, res) => {
     const { id } = req.params;
     projects.getProjectActions(id)
@@ -47,6 +49,7 @@ server.get('/api/users/projectModel/:id', (req, res) => {
         })
 })
 
+// Post Data to Database
 server.post('/api/users', (req, res) => {
     const { name, description, completed } = req.body;
     projects.insert({ name, description, completed })
@@ -58,6 +61,7 @@ server.post('/api/users', (req, res) => {
         })
 })
 
+// Delete Data from Database
 server.delete('/api/users/:id', (req, res) => {
     const { id } = req.params;
     projects.remove(id)
@@ -69,6 +73,7 @@ server.delete('/api/users/:id', (req, res) => {
             }
         })
 })
+
 
 server.put('/api/users/:id', (req, res) => {
     const { id } = req.params;
