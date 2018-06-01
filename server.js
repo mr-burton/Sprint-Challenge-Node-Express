@@ -34,7 +34,7 @@ server.get('/api/users/:id', (req, res) => {
         .catch(error => {
             console.log(error);
         })
-})  
+})
 
 server.get('/api/users/projectModel/:id', (req, res) => {
     const { id } = req.params;
@@ -45,11 +45,11 @@ server.get('/api/users/projectModel/:id', (req, res) => {
         .catch(error => {
             console.log(error);
         })
-})  
+})
 
 server.post('/api/users', (req, res) => {
-    const { name } = req.body;
-    projects.insert({ name })
+    const { name, description, completed } = req.body;
+    projects.insert({ name, description, completed })
         .then(users => {
             res.json(users);
         })
@@ -58,17 +58,29 @@ server.post('/api/users', (req, res) => {
         })
 })
 
-// server.put('/api/users', (req, res) => {
-//     const { id } = req.params;
-//     const { name } = req.body;
-//     projectModel.update(id, { name })
-//         .then(response => {
-//             res.json(response);
-//         })
-//         .catch(error => {
-//             console.log(error);
-//     })
-// })
+server.delete('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    projects.remove(id)
+        .then(response => {
+            if (response === 1) {
+                res.json('welcome to the party');
+            } else {
+                res.json('try again my friend');
+            }
+        })
+})
+
+server.put('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, description, completed } = req.body;
+    projects.update(id, { name, description, completed })
+        .then(response => {
+            res.json(response);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+})
 
 // Running Server
 server.listen(port, () => console.log(`Server running on port, ${port}`));
