@@ -17,6 +17,16 @@ const sendUserError = (status, message, res) => {
     return;
 }
 
+// Middleware name check
+const nameCheck = (req, res, next) => {
+    const { name, description, completed } = req.body;
+    if (!name, !description, !completed) {
+        return errorMessage(404, 'please include name', res);
+    } else {
+        next();
+    }
+}
+
 // Get all data
 server.get('/api/users', (req, res) => {
     projects.get()
@@ -26,7 +36,7 @@ server.get('/api/users', (req, res) => {
 })
 
 // Get specific ID
-server.get('/api/users/:id', (req, res) => {
+server.get('/api/users/:id', nameCheck, (req, res) => {
     const { id } = req.params;
     projects.get(id)
         .then(response => {
@@ -38,7 +48,7 @@ server.get('/api/users/:id', (req, res) => {
 })
 
 // Get ID of Project Model
-server.get('/api/users/projectModel/:id', (req, res) => {
+server.get('/api/users/projectModel/:id', nameCheck, (req, res) => {
     const { id } = req.params;
     projects.getProjectActions(id)
         .then(response => {
@@ -50,7 +60,7 @@ server.get('/api/users/projectModel/:id', (req, res) => {
 })
 
 // Post Data to Database
-server.post('/api/users', (req, res) => {
+server.post('/api/users', nameCheck, (req, res) => {
     const { name, description, completed } = req.body;
     projects.insert({ name, description, completed })
         .then(users => {
@@ -75,7 +85,7 @@ server.delete('/api/users/:id', (req, res) => {
 })
 
 
-server.put('/api/users/:id', (req, res) => {
+server.put('/api/users/:id', nameCheck, (req, res) => {
     const { id } = req.params;
     const { name, description, completed } = req.body;
     projects.update(id, { name, description, completed })
